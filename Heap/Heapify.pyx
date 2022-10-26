@@ -1,85 +1,61 @@
+
 '''
+Cython Implementation
 Turbocharged Non-Recursive Heapify algorithm
 Time Complexity: O(N)
 Space Complexity: O(1)
-Warning !!
-Use Arrays if you want to it with numba
-
-If you want to use list. Try the cython implementation.
 '''
+from cython.parallel cimport prange
 
-from numba import njit
 
-
-@njit(fastmath=True)
-def compare(head, left, right):
+cdef compare(double head, double left, double right):
     '''
     Loop Around Nodes
+
     Attribute
     ------------------
              head: int - Top of the node
              left: int - Bottom left of the node
              right: int -  Top right of the node
+
     Returns
     -----------------
              None
     '''
+
+    cdef double temp
 
     if right <= left and head > right:
         temp = head
         head = right
         right = temp
 
-    if left <= right and head > left:
+    elif left <= right and head > left:
         temp = head
         head = left
-        left = temp
+        left = temp  
 
     return head, left, right
 
 
-@njit(fastmath=True)
-def loop_node(j, lst, n):
+cdef loop_log_n(int pos, list lst, int n):
     '''
     Loop Around Nodes
+
     Attribute
     ------------------
              j: int - starting point
              lst: list
              n: length of the list
+
     Returns
     -----------------
              None
+
     '''
-    while 2 * j + 2 < n:
 
-        left = 2 * j + 1
-        right = 2 * j + 2
-
-        lst[j], lst[left], lst[right] = compare(
-            lst[j], lst[left], lst[right]
-            )
-
-        j = j + 1
-
-    if (n % 2 == 0 and 2 * j + 1 < n and 2 * j + 2 >= n and
-       lst[j] > lst[2 * j + 1]):
-        lst[2 * j + 1], lst[j] = lst[j], lst[2 * j + 1]
-
-
-@njit(fastmath=True)
-def loop_log_n(pos, lst, n):
-    '''
-    Loop Around Nodes
-    Attribute
-    ------------------
-             j: int - starting point
-             lst: list
-             n: length of the list
-    Returns
-    -----------------
-             None
-    '''
+    cdef int left, right
+    cdef double temp, temp_left, temp_right
 
     left = 2 * pos + 1
     right = left + 1
@@ -104,22 +80,24 @@ def loop_log_n(pos, lst, n):
         left = 2 * pos + 1
         right = left + 1
 
-    if (n % 2 == 0 and 2 * pos + 1 < n and 2 * pos + 2 >= n and
-       lst[pos] > lst[2 * pos + 1]):
-        lst[2 * pos + 1], lst[pos] = lst[pos], lst[2 * pos + 1]
+    if (n % 2 == 0 and left < n and right >= n and
+       lst[pos] > lst[left]):
+        lst[left], lst[pos] = lst[pos], lst[left]
 
 
-@njit
-def remove_uneven_nodes(lst: list):
+cdef remove_uneven_nodes(list lst):
     '''
     Initialise bottom Uneven nodes
+
     Attribute
     ------------------
              lst: list
+
     Returns
     -----------------
              lst: list
     '''
+    cdef int global_length, length, idx, m
 
     global_length = length = len(lst)
 
@@ -134,30 +112,38 @@ def remove_uneven_nodes(lst: list):
     return global_length, length
 
 
-@njit(fastmath=True)
-def heapify(lst: list):
+cpdef heapify(list lst):
     '''
     Heapify algorithm
+
     Attribute
     ------------------
              lst: list
+
     Returns
     -----------------
              None
     '''
-    global_length, length = remove_uneven_nodes(lst)
+    cdef int global_length, length, i, step, start,  _
+    cdef double temp, temp_right
 
-    for i in range(global_length - 2, 0, -2):
+    global_length, length = remove_uneven_nodes(lst)
+    step = 2
+    start = global_length
+    i = global_length
+
+    for _ in range(start//step):
+        i = i - step
         temp, temp_right = lst[i//2], lst[i + 1]
 
         # Bottom-up Approach
         lst[i//2], lst[i], lst[i + 1] = compare(lst[i//2], lst[i], lst[i + 1])
 
-        if lst[i//2] == temp:
+        if(lst[i//2] == temp):
             continue
 
         # Top-Down
-        if lst[i//2] == temp_right:
+        else if(lst[i//2] == temp_right):
             loop_log_n(i + 1, lst, length)
 
         else:
