@@ -15,7 +15,8 @@ from numba import njit
 def compare(head, left, right):
     '''
     Loop Around Nodes
-    Attribute
+
+    Params
     ------------------
              head: int - Top of the node
              left: int - Bottom left of the node
@@ -42,7 +43,8 @@ def compare(head, left, right):
 def loop_node(j, lst, n):
     '''
     Loop Around Nodes
-    Attribute
+
+    Params
     ------------------
              j: int - starting point
              lst: list
@@ -71,7 +73,8 @@ def loop_node(j, lst, n):
 def loop_log_n(pos, lst, n):
     '''
     Loop Around Nodes
-    Attribute
+
+    Params
     ------------------
              j: int - starting point
              lst: list
@@ -113,7 +116,8 @@ def loop_log_n(pos, lst, n):
 def remove_uneven_nodes(lst: list):
     '''
     Initialise bottom Uneven nodes
-    Attribute
+
+    Params
     ------------------
              lst: list
     Returns
@@ -138,7 +142,8 @@ def remove_uneven_nodes(lst: list):
 def heapify(lst: list):
     '''
     Heapify algorithm
-    Attribute
+
+    Params
     ------------------
              lst: list
     Returns

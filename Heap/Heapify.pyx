@@ -5,7 +5,6 @@ Turbocharged Non-Recursive Heapify algorithm
 Time Complexity: O(N)
 Space Complexity: O(1)
 '''
-from cython.parallel cimport prange
 
 
 cdef compare(double head, double left, double right):
@@ -139,11 +138,11 @@ cpdef heapify(list lst):
         # Bottom-up Approach
         lst[i//2], lst[i], lst[i + 1] = compare(lst[i//2], lst[i], lst[i + 1])
 
-        if(lst[i//2] == temp):
+        if lst[i//2] == temp:
             continue
 
         # Top-Down
-        else if(lst[i//2] == temp_right):
+        elif lst[i//2] == temp_right:
             loop_log_n(i + 1, lst, length)
 
         else:
