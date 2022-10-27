@@ -11,7 +11,7 @@ cdef compare(double head, double left, double right):
     '''
     Loop Around Nodes
 
-    Attribute
+    Params
     ------------------
              head: int - Top of the node
              left: int - Bottom left of the node
@@ -41,7 +41,7 @@ cdef loop_log_n(int pos, list lst, int n):
     '''
     Loop Around Nodes
 
-    Attribute
+    Params
     ------------------
              j: int - starting point
              lst: list
@@ -88,7 +88,7 @@ cdef remove_uneven_nodes(list lst):
     '''
     Initialise bottom Uneven nodes
 
-    Attribute
+    Params
     ------------------
              lst: list
 
@@ -115,7 +115,7 @@ cpdef heapify(list lst):
     '''
     Heapify algorithm
 
-    Attribute
+    Params
     ------------------
              lst: list
 
